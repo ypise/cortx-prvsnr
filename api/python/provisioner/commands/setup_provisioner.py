@@ -581,9 +581,10 @@ class SetupCmdBase:
             run_args.profile.name if run_args.profile else run_args.name
         )
         if not res:
-            res = '__'.join(
-                [str(node) for node in run_args.nodes]
-            ).replace(':', '_')
+            #res = '__'.join(
+            #    [str(node) for node in run_args.nodes]
+            #).replace(':', '_')
+            res = str(run_args.nodes[0]).replace(':', '_')
         return res
 
 
