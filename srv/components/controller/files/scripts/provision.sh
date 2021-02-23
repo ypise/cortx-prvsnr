@@ -1419,6 +1419,16 @@ fw_update()
     [ -z $fw_bundle ] && echo "Error: No firmware bundle provided" &&
         exit 1
 
+    # Check if fw update is already in progress
+    ctrl_activity_get "$tmpdir/progress"
+    if [[ $ctrl_activity_a == "codeload" || $ctrl_activity_b == "codeload" ]]; then
+        echo "ERROR: fw_update() Firmware update is already in progress on Controller" >> $logfile
+        echo "Please wait for the firmware update to complete" >> $logfile
+        exit 1
+    else
+        echo "DEBUG: no codeload activity on the controller, proceeding with update" >> $logfile
+    fi
+
     # Save the current version of the firmware on the controllers
     echo "Getting current fw versions (before update)" >> $logfile
     fw_ver_get >> $logfile
