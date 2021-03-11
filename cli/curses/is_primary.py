@@ -17,6 +17,7 @@
 #
 #
 import curses
+import config
 from curses import textpad
 from window import Window
 from color_code import ColorCode
@@ -49,7 +50,7 @@ class PrimaryWindow(Window):
 
         self._window.refresh()
 
-    def process_input(self):
+    def process_input(self, color_code):
         current_row = 0
         while 1:
            key = self._window.getch()
@@ -63,18 +64,14 @@ class PrimaryWindow(Window):
            elif key == curses.KEY_ENTER or key in (10, 13):
                if current_row == 0:
                     wd = HostnameWindow(self._window)
-                    wd.create_default_window(2)
-                    wd.create_window(color_code=2)
-                    import os
-                    os.system(f"echo {current_row} >> test.log")
+                    wd.create_default_window(config.default_window_color)
+                    wd.create_window(color_code=config.default_window_color)
                     break
                else:
-                    import os
-                    os.system(f"echo {current_row} >> test.log")
                     break
 
            self._window.clear()
-           self.create_default_window(2)
-           self.create_window(color_code=2,selected=self.get_menu()[current_row])
+           self.create_default_window(config.default_window_color)
+           self.create_window(color_code=color_code, selected=self.get_menu()[current_row])
            self._window.refresh()
 

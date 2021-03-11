@@ -52,7 +52,7 @@ class Window:
         textpad.rectangle(self._window, 1,1, self._max_h - 2, self._max_w - 2)
         self._window.addstr(5,self._max_w//2 - 6 ,"Lyve Rack II")
         self._window.hline(6,2,"_",self._max_w - 4)
-        self._window.addstr(self._max_h-1, 0, " Key Commands : q - to quit " ,curses.color_pair(2) )
+        self._window.addstr(self._max_h-1, 0, " Key Commands : q - to quit " ,curses.color_pair(color_code) )
         self.off_attr(col_code_attr)
 
     def create_window(self, **kwargs):

@@ -17,23 +17,18 @@
 #
 #
 import curses
-import config
-from curses import textpad
-from main_menu import MainMenu
-from color_code import ColorCode
+
+color_codes = {
+    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
+    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
+    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
+}
+
+error_color = 3
+default_window_color = 2
+menu_color = 2
+
+menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
 
 
-def main(stdscr):
-    screen = curses.initscr()
-    curses.curs_set(0)
-    cod = ColorCode()
-    for code, color in config.color_codes.items():
-        cod.create_color_pair(code, color[0], color[1])
-    wind = MainMenu(stdscr)
-    wind.create_default_window(config.default_window_color)
-    wind.create_window(color_code=config.menu_color,menu_code=0)
-    wind.process_input(config.menu_color)
-
-if __name__=='__main__':
-    curses.wrapper(main)
 

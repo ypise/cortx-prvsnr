@@ -17,11 +17,9 @@
 #
 #
 import curses
-
-color_code = 0
+import config
 
 class ColorCode:
-    _color_nodes = {}
     _instance = None
 
     def __init__(self):
@@ -31,16 +29,10 @@ class ColorCode:
             curses.start_color()
             self._instance = self
 
-    def create_color_pair(self, color1, color2):
-        global color_code
-        color_code += 1
-        self._color_nodes[color_code] = [color1, color2]
-        curses.init_pair(color_code, color1, color2)
-        return color_code
+    def create_color_pair(self,code, color1, color2):
+        curses.init_pair(code, color1, color2)
 
     def get_color_pair(self, color_code):
-        if not self._color_nodes.get(color_code, None):
+        if not config.color_codes.get(color_code, None):
             raise Exception("No color code defined")
         return curses.color_pair(color_code)
-
-

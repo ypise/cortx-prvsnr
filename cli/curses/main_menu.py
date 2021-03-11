@@ -17,6 +17,7 @@
 #
 #
 import curses
+import config
 from curses import textpad
 from window import Window
 from color_code import ColorCode
@@ -24,8 +25,11 @@ from is_primary import PrimaryWindow
 from check import Check
 
 class MainMenu(Window):
+    _menu = None
 
-    _menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
+    def __init__(self, window):
+        super().__init__(window)
+        self._menu = config.menu
 
     def get_menu(self):
         return self._menu
@@ -57,7 +61,7 @@ class MainMenu(Window):
                 self.off_attr(col_code_attr)
         self._window.refresh()
 
-    def process_input(self):
+    def process_input(self, color_code):
         current_row = 0
         while 1:
             key = self._window.getch()
@@ -74,16 +78,16 @@ class MainMenu(Window):
                     return
                 if current_row == 0:
                     wd = PrimaryWindow(self._window)
-                    wd.create_default_window(2)
-                    wd.create_window(color_code=2,selected="Yes")
-                    wd.process_input()
+                    wd.create_default_window(config.default_window_color)
+                    wd.create_window(color_code=color_code,selected="Yes")
+                    wd.process_input(config.menu_color)
                 else:
                     self.create_default_window(2)
                     self._window.addstr(10,10 ,f"You pressed {self.get_menu()[current_row]}")
                     self._window.refresh()
 
             self._window.clear()
-            self.create_default_window(2)
-            self.create_window(color_code=2,menu_code=current_row)
+            self.create_default_window(config.default_window_color)
+            self.create_window(color_code=color_code,menu_code=current_row)
             self._window.refresh()
 
