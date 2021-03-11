@@ -21,6 +21,7 @@ from curses import textpad
 from window import Window
 from color_code import ColorCode
 from success import SuccessWindow
+from check import Check
 from curses.textpad import Textbox
 
 class TextBox(Window):
@@ -40,12 +41,16 @@ class TextBox(Window):
             text = Textbox(new_win, insert_mode=False)
             data = text.edit()
 
-            if data.strip() == "1.1.1.1":
+            if "seagate.com" in data.strip():
                 is_valid = True
+                checks = Check()
+                content = checks.loads()
+                content['Set Hostname'] = True
+                checks.dumps(content)
             else:
                 col_code_attr = ColorCode().get_color_pair(3)
                 self.on_attr(col_code_attr)
-                self._window.addstr(self.y + 3,3 ,f"Error: Invalid hostname {data.strip()}")
+                self._window.addstr(self.y + 3,3 ,f"Error: Invalid hostname {data.strip()} Please re-enter hostname")
                 self.off_attr(col_code_attr)
                 self._window.refresh()
 

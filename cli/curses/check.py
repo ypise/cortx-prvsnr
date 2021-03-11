@@ -17,22 +17,18 @@
 #
 #
 import curses
-from curses import textpad
-from main_menu import MainMenu
-from color_code import ColorCode
+import json
 
-def main(stdscr):
-    screen = curses.initscr()
-    curses.curs_set(0)
-    cod = ColorCode()
-    cod.create_color_pair(curses.COLOR_BLACK, curses.COLOR_WHITE)
-    cod.create_color_pair(curses.COLOR_GREEN,curses.COLOR_BLACK)
-    cod.create_color_pair(curses.COLOR_RED,curses.COLOR_BLACK)
-    wind = MainMenu(stdscr)
-    wind.create_default_window(2)
-    wind.create_window(color_code=2,menu_code=0)
-    wind.process_input()
+class Check():
+    _filename = None
 
-if __name__=='__main__':
-    curses.wrapper(main)
+    def __init__(self, filename='curses/check.json'):
+        self._filename = filename
 
+    def loads(self):
+        with open(self._filename) as f:
+            return json.load(f)
+
+    def dumps(self, data):
+        with open(self._filename, 'w') as json_file:
+            json.dump(data, json_file)

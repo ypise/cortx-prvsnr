@@ -21,18 +21,26 @@ from curses import textpad
 from window import Window
 from color_code import ColorCode
 from is_primary import PrimaryWindow
+from check import Check
 
 class MainMenu(Window):
 
-    _menu = ['set Hostname', 'set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
+    _menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
 
     def get_menu(self):
         return self._menu
+
+    def set_checks(self, name, value):
+        self._checks[name] = value
+
+    def get_checks(self):
+        return Check().loads()
 
     def create_window(self, **kwargs):
         color_code = kwargs['color_code']
         selected_rows = kwargs['menu_code']
         col_code_attr = ColorCode().get_color_pair(color_code)
+        checks = self.get_checks()
         for idx, row in enumerate(self._menu):
             x = self.get_max_width() // 2 - len(row)//2
             y = self.get_max_height() // 2 - len(self._menu)//2 + idx
@@ -43,6 +51,10 @@ class MainMenu(Window):
                 self.off_attr(col_code_attr)
             else:
                 self._window.addstr(y,x ,row)
+            if row != "EXIT" and checks[row]:
+                self.on_attr(col_code_attr)
+                self._window.addstr(y,x + len(row)+2 ,u"\u2713")
+                self.off_attr(col_code_attr)
         self._window.refresh()
 
     def process_input(self):
@@ -60,7 +72,7 @@ class MainMenu(Window):
             elif key == curses.KEY_ENTER or key in (10, 13):
                 if current_row == len(self.get_menu()) - 1:
                     return
-                if current_row == 1:
+                if current_row == 0:
                     wd = PrimaryWindow(self._window)
                     wd.create_default_window(2)
                     wd.create_window(color_code=2,selected="Yes")
