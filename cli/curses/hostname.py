@@ -17,6 +17,7 @@
 #
 #
 import curses
+import config
 from curses import textpad
 from window import Window
 from color_code import ColorCode
@@ -26,14 +27,16 @@ class HostnameWindow(Window):
 
     def create_window(self, **kwargs):
         color_code = kwargs['color_code']
+        comp = kwargs['component']
+        comp_name = config.short_menu[comp]
         col_code_attr = ColorCode().get_color_pair(color_code)
         x = self.get_max_width() // 2
         y = self.get_max_height() // 2 - 1
         self.on_attr(col_code_attr)
-        self._window.addstr(y,3 ,"Please enter hostname for this machine ")
+        self._window.addstr(y,3 ,f"Please enter {comp_name} for this machine ")
         self.enable_keypad()
         self.off_attr(col_code_attr)
         self._window.hline(y + 4 , 3 ,"_",16)
         self._window.refresh()
-        TextBox(self._window, 1, 16, y+3, 3).create_textbox(color_code)
+        TextBox(self._window, 1, 16, y+3, 3).create_textbox(color_code, kwargs['component'])
 

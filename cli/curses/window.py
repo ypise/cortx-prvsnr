@@ -17,6 +17,7 @@
 #
 #
 import curses
+import config
 from curses import textpad
 from color_code import ColorCode
 
@@ -50,7 +51,7 @@ class Window:
         col_code_attr = ColorCode().get_color_pair(color_code)
         self.on_attr(col_code_attr)
         textpad.rectangle(self._window, 1,1, self._max_h - 2, self._max_w - 2)
-        self._window.addstr(5,self._max_w//2 - 6 ,"Lyve Rack II")
+        self._window.addstr(5,self._max_w//2 - len(config.tittle)//2 ,f"{config.tittle}")
         self._window.hline(6,2,"_",self._max_w - 4)
         self._window.addstr(self._max_h-1, 0, " Key Commands : q - to quit " ,curses.color_pair(color_code) )
         self.off_attr(col_code_attr)

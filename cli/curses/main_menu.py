@@ -76,15 +76,11 @@ class MainMenu(Window):
             elif key == curses.KEY_ENTER or key in (10, 13):
                 if current_row == len(self.get_menu()) - 1:
                     return
-                if current_row == 0:
+                if current_row >= 0 and current_row < len(self.get_menu()):
                     wd = PrimaryWindow(self._window)
                     wd.create_default_window(config.default_window_color)
                     wd.create_window(color_code=color_code,selected="Yes")
-                    wd.process_input(config.menu_color)
-                else:
-                    self.create_default_window(2)
-                    self._window.addstr(10,10 ,f"You pressed {self.get_menu()[current_row]}")
-                    self._window.refresh()
+                    wd.process_input(config.menu_color, current_row)
 
             self._window.clear()
             self.create_default_window(config.default_window_color)

@@ -50,7 +50,7 @@ class PrimaryWindow(Window):
 
         self._window.refresh()
 
-    def process_input(self, color_code):
+    def process_input(self, color_code, component):
         current_row = 0
         while 1:
            key = self._window.getch()
@@ -65,7 +65,7 @@ class PrimaryWindow(Window):
                if current_row == 0:
                     wd = HostnameWindow(self._window)
                     wd.create_default_window(config.default_window_color)
-                    wd.create_window(color_code=config.default_window_color)
+                    wd.create_window(component=component, color_code=config.default_window_color)
                     break
                else:
                     break

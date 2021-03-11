@@ -28,7 +28,8 @@ error_color = 3
 default_window_color = 2
 menu_color = 2
 
+tittle = "Lvye Rack II"
 menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-
+short_menu = ['hostname', 'management vip', 'network', 'storage']
 
 

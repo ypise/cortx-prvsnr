@@ -17,6 +17,7 @@
 #
 #
 import curses
+import config
 from curses import textpad
 from window import Window
 from color_code import ColorCode
@@ -34,7 +35,7 @@ class TextBox(Window):
         self.x = x
         self.y = y
 
-    def create_textbox(self, color_code):
+    def create_textbox(self, color_code, component):
         is_valid = False
         while(not is_valid):
             new_win = curses.newwin(self.h, self.w, self.y, self.x)
@@ -45,18 +46,18 @@ class TextBox(Window):
                 is_valid = True
                 checks = Check()
                 content = checks.loads()
-                content['Set Hostname'] = True
+                content[config.menu[component]] = True
                 checks.dumps(content)
             else:
                 col_code_attr = ColorCode().get_color_pair(3)
                 self.on_attr(col_code_attr)
-                self._window.addstr(self.y + 3,3 ,f"Error: Invalid hostname {data.strip()} Please re-enter hostname")
+                self._window.addstr(self.y + 3,3 ,f"Error: Invalid {config.short_menu[component]} {data.strip()} Please re-enter hostname")
                 self.off_attr(col_code_attr)
                 self._window.refresh()
 
         self._window.clear()
         win = SuccessWindow(self._window)
         win.create_default_window(2)
-        win.create_window(color_code=2,data=data)
+        win.create_window(color_code=2,data=f"{config.short_menu[component]} : {data}")
 
 

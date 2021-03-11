@@ -30,7 +30,7 @@ class SuccessWindow(Window):
         x = self.get_max_width() // 2
         y = self.get_max_height() // 2 - 1
         self.on_attr(col_code_attr)
-        self._window.addstr(y,3 ,f"Hostname {data} is set Successfully")
+        self._window.addstr(y,3 ,f"{data} is set Successfully")
         self.off_attr(col_code_attr)
         self._window.refresh()
         curses.napms(1000)
