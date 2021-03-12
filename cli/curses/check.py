@@ -18,12 +18,18 @@
 #
 import curses
 import json
+from pathlib import Path
 
 class Check():
     _filename = None
 
-    def __init__(self, filename='curses/check.json'):
-        self._filename = filename
+    def __init__(self, filename=None):
+        if not filename:
+            self._filename = str(
+                Path(__file__).resolve().parent / 'check.json' 
+            )
+        else:
+            self._filename = filename
 
     def loads(self):
         with open(self._filename) as f:
