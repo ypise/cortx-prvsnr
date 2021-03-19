@@ -17,20 +17,26 @@
 #
 #
 import curses
+import config
+from curses import textpad
+from window import Window
+from color_code import ColorCode
+from text_box import TextBox
 
-color_codes = {
-    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
-    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
-    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
-}
+class HostnameWindow(Window):
 
-error_color = 3
-default_window_color = 2
-menu_color = 2
-
-tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-short_menu = ['hostname', 'management vip', 'network', 'storage']
-default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
-
+    def create_window(self, **kwargs):
+        color_code = kwargs['color_code']
+        comp = kwargs['component']
+        comp_name = config.short_menu[comp]
+        col_code_attr = ColorCode().get_color_pair(color_code)
+        x = self.get_max_width() // 2
+        y = self.get_max_height() // 2 - 1
+        self.on_attr(col_code_attr)
+        self._window.addstr(y,3 ,f"Please enter {comp_name} for this machine ")
+        self.enable_keypad()
+        self.off_attr(col_code_attr)
+        #self._window.hline(y + 4 , 3 ,"_",16)
+        #self._window.refresh()
+        TextBox(self._window, 1, 16, y+3, 3).create_textbox(color_code, kwargs['component'], 1)
 

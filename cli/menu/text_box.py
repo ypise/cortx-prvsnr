@@ -37,8 +37,12 @@ class TextBox(Window):
 
     def create_textbox(self, color_code, component):
         is_valid = False
+        data = ""
         while(not is_valid):
-            new_win = curses.newwin(self.h, self.w, self.y, self.x)
+            self._window.hline(self.y + 2 , self.x ,"_",16)
+            self._window.refresh()
+
+            new_win = curses.newwin(self.h, self.w, self.y + 1, self.x)
             text = Textbox(new_win, insert_mode=True)
             default_value = config.default_textbox[component]
             for i in default_value:
@@ -47,20 +51,20 @@ class TextBox(Window):
 
             if "seagate.com" in data.strip():
                 is_valid = True
-                checks = Check()
-                content = checks.loads()
-                content[config.menu[component]] = True
-                checks.dumps(content)
+                #checks = Check()
+                #content = checks.loads()
+                #content[config.menu[component]] = True
+                #checks.dumps(content)
             else:
                 col_code_attr = ColorCode().get_color_pair(3)
                 self.on_attr(col_code_attr)
                 self._window.addstr(self.y + 3,3 ,f"Error: Invalid {config.short_menu[component]} {data.strip()} Please re-enter hostname")
                 self.off_attr(col_code_attr)
                 self._window.refresh()
-
-        self._window.clear()
-        win = SuccessWindow(self._window)
-        win.create_default_window(2)
-        win.create_window(color_code=2,data=f"{config.short_menu[component]} : {data}")
+        return data
+        #self._window.clear()
+        #win = SuccessWindow(self._window)
+        #win.create_default_window(2)
+        #win.create_window(color_code=2,data=f"{config.short_menu[component]} : {data}")
 
 

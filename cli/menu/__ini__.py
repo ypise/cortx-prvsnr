@@ -16,21 +16,9 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 #
-import curses
-
-color_codes = {
-    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
-    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
-    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
-}
-
-error_color = 3
-default_window_color = 2
-menu_color = 2
-
-tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-short_menu = ['hostname', 'management vip', 'network', 'storage']
-default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
-
+from main_menu import MainMenu
+from color_code import ColorCode
+from primary import PrimaryWindow
+from text_box import TextBox
+from hostname import HostnameWindow
 

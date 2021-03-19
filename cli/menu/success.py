@@ -17,20 +17,21 @@
 #
 #
 import curses
+from curses import textpad
+from color_code import ColorCode
+from window import Window
 
-color_codes = {
-    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
-    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
-    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
-}
+class SuccessWindow(Window):
 
-error_color = 3
-default_window_color = 2
-menu_color = 2
-
-tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-short_menu = ['hostname', 'management vip', 'network', 'storage']
-default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
-
+    def create_window(self, **kwargs):
+        color_code = kwargs['color_code']
+        data = kwargs['data']
+        col_code_attr = ColorCode().get_color_pair(color_code)
+        x = self.get_max_width() // 2
+        y = self.get_max_height() // 2 - 1
+        self.on_attr(col_code_attr)
+        self._window.addstr(y,3 ,f"{data} is set Successfully")
+        self.off_attr(col_code_attr)
+        self._window.refresh()
+        curses.napms(1000)
 

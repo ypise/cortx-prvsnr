@@ -17,20 +17,24 @@
 #
 #
 import curses
+import json
+from pathlib import Path
 
-color_codes = {
-    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
-    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
-    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
-}
+class Check():
+    _filename = None
 
-error_color = 3
-default_window_color = 2
-menu_color = 2
+    def __init__(self, filename=None):
+        if not filename:
+            self._filename = str(
+                Path(__file__).resolve().parent / 'check.json' 
+            )
+        else:
+            self._filename = filename
 
-tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-short_menu = ['hostname', 'management vip', 'network', 'storage']
-default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
+    def loads(self):
+        with open(self._filename) as f:
+            return json.load(f)
 
-
+    def dumps(self, data):
+        with open(self._filename, 'w') as json_file:
+            json.dump(data, json_file)

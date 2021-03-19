@@ -17,20 +17,22 @@
 #
 #
 import curses
+import config
 
-color_codes = {
-    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
-    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
-    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
-}
+class ColorCode:
+    _instance = None
 
-error_color = 3
-default_window_color = 2
-menu_color = 2
+    def __init__(self):
+        if self._instance:
+            return _instance
+        else:
+            curses.start_color()
+            self._instance = self
 
-tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-short_menu = ['hostname', 'management vip', 'network', 'storage']
-default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
+    def create_color_pair(self,code, color1, color2):
+        curses.init_pair(code, color1, color2)
 
-
+    def get_color_pair(self, color_code):
+        if not config.color_codes.get(color_code, None):
+            raise Exception("No color code defined")
+        return curses.color_pair(color_code)

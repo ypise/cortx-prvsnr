@@ -17,20 +17,24 @@
 #
 #
 import curses
+import config
+from curses import textpad
+from window import Window
+from color_code import ColorCode
+from text_box import TextBox
 
-color_codes = {
-    1 : [curses.COLOR_BLACK, curses.COLOR_WHITE],
-    2 : [curses.COLOR_GREEN,curses.COLOR_BLACK],
-    3 : [curses.COLOR_RED,curses.COLOR_BLACK]
-}
+class HeaderWindow(Window):
 
-error_color = 3
-default_window_color = 2
-menu_color = 2
-
-tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
-short_menu = ['hostname', 'management vip', 'network', 'storage']
-default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
+    def create_window(self, **kwargs):
+        color_code = kwargs['color_code']
+        col_code_attr = ColorCode().get_color_pair(color_code)
+        self.on_attr(col_code_attr)
+        #header_window = curses.newwin( self._max_h // 5, self._max_w - 1, 1, 1)
+        #self._window.border()
+        self._window.addstr(self._max_h // 2 , self._max_w // 2 - len(config.tittle)//2 ,f"{config.tittle}")
+        self._window.refresh()
+        #self._window.hline(6,2,"_",self._max_w - 4)
+        #self._window.addstr(self._max_h-1, 0, " Key Commands : q - to quit " ,curses.color_pair(color_code) )
+        self.off_attr(col_code_attr)
 
 

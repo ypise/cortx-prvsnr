@@ -24,12 +24,32 @@ color_codes = {
     3 : [curses.COLOR_RED,curses.COLOR_BLACK]
 }
 
+
+sub_menu_network= { 1: "DHCP",
+                    2: "Static",
+                    3: "Gateway"
+                  }
+
+menu_network = { 1: { 'Management Network': sub_menu_network },
+                 2: { 'Data Network': sub_menu_network},
+                 3: { 'BMC Network IP': sub_menu_network},
+                 4: 'Apply Network'
+               }
+
+menu = {
+    1: 'Set Hostname',
+    2: { 'Setup Netowrk' : menu_network },
+    3: 'Set Host Primary',
+    4: 'Setup storage'
+}
+
 error_color = 3
 default_window_color = 2
 menu_color = 2
 
 tittle = "Lvye Rack II"
-menu = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
+menus = ['Set Hostname', 'Set Managment VIP', 'Setup Netowrk', 'Setup Storage' , 'EXIT']
+network_menu = ['Management Network', 'Data Network', 'BMC Network', 'Applies Network']
 short_menu = ['hostname', 'management vip', 'network', 'storage']
 default_textbox = ['seagate.com', '10.10.10.10', 'eno1', 'test']
 
