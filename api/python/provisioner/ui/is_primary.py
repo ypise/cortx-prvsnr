@@ -34,6 +34,8 @@ class PrimaryWindow(Window):
 
         color_code = kwargs['color_code']
         selected = kwargs['selected']
+
+        self.create_menu_head()
         self._window.border()
         col_code_attr = ColorCode.get_color_pair(color_code)
         x = self.get_max_width() // 2

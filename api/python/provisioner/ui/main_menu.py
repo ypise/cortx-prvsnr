@@ -98,6 +98,7 @@ class MainMenu(Window):
                             raise
                         Pm_w = getattr(wid_mod, cls)
                         wd = Pm_w(self._window)
+                        wd._parent = self._parent
                         if module == 'is_primary':
                             wd.create_window(color_code=color_code, selected="Yes")
                             wd.process_input(

@@ -30,6 +30,9 @@ class HostnameWindow(Window):
     def create_window(self, **kwargs):
         color_code = kwargs['color_code']
         comp_name = ' '.join(kwargs['component'])
+
+        self.create_menu_head()
+
         col_code_attr = ColorCode.get_color_pair(color_code)
         x = self.get_max_width() // 2
         y = self.get_max_height() // 2 - 1
@@ -37,8 +40,6 @@ class HostnameWindow(Window):
         self._window.addstr(y,3 ,f"Please enter {comp_name} for this machine ")
         self.enable_keypad()
         self.off_attr(col_code_attr)
-        #self._window.hline(y + 4 , 3 ,"_",16)
-        #self._window.refresh()
         data = TextBox(self._window, 1, 16, y+3, 3).create_textbox(color_code, kwargs['component'])
 
         self._window.clear()
