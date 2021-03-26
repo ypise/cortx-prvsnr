@@ -30,6 +30,7 @@ class StaticNetworkWindow(Window):
     data = {'Ip': '10.10.10.10',
             'Netmask': '1.255.255.255',
             'Gateway': '198.162.0.1'}
+    
 
     def submit_button(self, x, y, menu, selected_rows):
         buttons = {
@@ -50,11 +51,8 @@ class StaticNetworkWindow(Window):
             else:
                 self._window.addstr(y + 1,buttons[button] ,button)
 
-
-    def create_window(self, **kwargs):
-        color_code = kwargs['color_code']
-        self._parent = kwargs['component']
-
+    @staticmethod
+    def parse_input(kwargs):
         if 'selected' not in kwargs:
             selected_rows = 0
         else:
@@ -64,7 +62,15 @@ class StaticNetworkWindow(Window):
             edit = False
         else:
             edit = kwargs['edit']
+        return selected_rows, edit
 
+
+
+    def create_window(self, **kwargs):
+        color_code = kwargs['color_code']
+        self._parent = kwargs['component']
+
+        selected_rows, edit = StaticNetworkWindow.parse_input(kwargs) 
         self._window.border()
         col_code_attr = ColorCode.get_color_pair(color_code)
         self.create_menu_head()

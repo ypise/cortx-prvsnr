@@ -36,7 +36,11 @@ sub_menu_network= { "DHCP": 'hostname:HostnameWindow',
                     "Static": 'statics:StaticNetworkWindow'
                   }
 
-menu_network = { 'Management Network': sub_menu_network ,
+sub_menu_mgmt_network= { "DHCP": 'hostname:HostnameWindow',
+                    "Static": 'mgmt_statics:StaticMGMTNetworkWindow'
+                  }
+
+menu_network = { 'Management Network': sub_menu_mgmt_network ,
                  'Data Network': sub_menu_network,
                  'BMC Network IP': sub_menu_network,
                  'Apply Network': 'hostname:HostnameWindow',

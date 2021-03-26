@@ -118,14 +118,10 @@ class MainMenu(Window):
                         Pm_w = getattr(wid_mod, cls)
                         wd = Pm_w(self._window)
                         wd._parent = self._parent
-                        if module == 'is_primary' or module == 'statics':
-                            wd.create_window(color_code=color_code, component=self._parent)
+                        wd.create_window(color_code=color_code, component=self._parent)
+                        if hasattr(wd, 'process_input'):
                             wd.process_input(
                                  color_code=color_code)
-                        else:
-                            wd.create_window(
-                                 color_code=color_code,
-                                 component=self._parent)
                         self._parent.remove(key)
 
             self._window.clear()
