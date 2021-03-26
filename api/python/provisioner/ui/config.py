@@ -23,7 +23,8 @@ from enum import Enum
 class ColorCodes(Enum):
     BLACK_N_WHITE = 1
     GREEN_N_BLACK = 2
-    RED_N_BLACK = 3 
+    RED_N_BLACK = 3
+    GREEN_N_WHITE = 4
 
 class Key(Enum):
     EXIT_1 = 10
@@ -31,9 +32,8 @@ class Key(Enum):
     QUITE = 113 
 
 
-sub_menu_network= { "DHCP": 'static:StaticWindow',
-                    "Static": 'static:StaticNetworkWindow',
-                    "Gateway":'static:StaticWindow'
+sub_menu_network= { "DHCP": 'hostname:HostnameWindow',
+                    "Static": 'statics:StaticNetworkWindow'
                   }
 
 menu_network = { 'Management Network': sub_menu_network ,
@@ -54,7 +54,8 @@ menu = {
 color_codes = {
     ColorCodes.BLACK_N_WHITE.value: [curses.COLOR_BLACK, curses.COLOR_WHITE],
     ColorCodes.GREEN_N_BLACK.value: [curses.COLOR_GREEN, curses.COLOR_BLACK],
-    ColorCodes.RED_N_BLACK.value: [curses.COLOR_RED, curses.COLOR_BLACK]
+    ColorCodes.RED_N_BLACK.value: [curses.COLOR_RED, curses.COLOR_BLACK],
+    ColorCodes.GREEN_N_WHITE.value: [curses.COLOR_GREEN, curses.COLOR_WHITE]
 }
 
 error_color = ColorCodes.RED_N_BLACK.value

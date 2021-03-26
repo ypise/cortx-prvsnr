@@ -33,7 +33,10 @@ class PrimaryWindow(Window):
     def create_window(self, **kwargs):
 
         color_code = kwargs['color_code']
-        selected = kwargs['selected']
+        if 'selected' not in kwargs:
+            selected = "Yes"
+        else:
+            selected = kwargs['selected']
 
         self.create_menu_head()
         self._window.border()
@@ -54,7 +57,7 @@ class PrimaryWindow(Window):
 
         self._window.refresh()
 
-    def process_input(self, color_code, component):
+    def process_input(self, color_code):
         current_row = 0
         while 1:
            key = self._window.getch()

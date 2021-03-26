@@ -40,7 +40,7 @@ class HostnameWindow(Window):
         self._window.addstr(y,3 ,f"Please enter {comp_name} for this machine ")
         self.enable_keypad()
         self.off_attr(col_code_attr)
-        data = TextBox(self._window, 1, 16, y+3, 3).create_textbox(color_code, kwargs['component'])
+        data = TextBox(self._window, 1, 16, y+3, 3, self.get_max_height()//4).create_textbox(color_code)
 
         self._window.clear()
 

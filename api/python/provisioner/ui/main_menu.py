@@ -99,11 +99,10 @@ class MainMenu(Window):
                         Pm_w = getattr(wid_mod, cls)
                         wd = Pm_w(self._window)
                         wd._parent = self._parent
-                        if module == 'is_primary':
-                            wd.create_window(color_code=color_code, selected="Yes")
+                        if module == 'is_primary' or module == 'statics':
+                            wd.create_window(color_code=color_code, component=self._parent)
                             wd.process_input(
-                                 color_code=color_code,
-                                 component=self._parent)
+                                 color_code=color_code)
                         else:
                             wd.create_window(
                                  color_code=color_code,

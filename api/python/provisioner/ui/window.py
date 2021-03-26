@@ -61,6 +61,8 @@ class Window:
 
     def create_menu_head(self):
         menu_header = '>> '.join(self._parent)
+        import os
+        os.system(f"echo '{self._parent}' >> keys.log")
         if menu_header:
             menu_header = menu_header + ":"
         col_code_attr = ColorCode.get_color_pair(config.default_menu_head)
