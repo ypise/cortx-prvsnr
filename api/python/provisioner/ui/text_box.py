@@ -43,7 +43,7 @@ class TextBox():
             self._window.hline(self.y + 1 , self.x ,"_",16)
             self._window.refresh()
 
-            new_win = curses.newwin(self.h, self.w, self.y+ self.header_height , self.x)
+            new_win = curses.newwin(self.h, self.w, self.y + self.header_height , self.x)
             text = Textbox(new_win, insert_mode=False)
             if default_value:
                 for i in default_value:

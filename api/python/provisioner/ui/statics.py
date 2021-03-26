@@ -62,7 +62,7 @@ class StaticNetworkWindow(Window):
 
         for idx, row in enumerate(values):
             y = self.get_max_height()  // 3 - len(values)//2 + (idx+1)*2
-            self._window.hline(y+1 , 15 ,"_",16)
+            #self._window.hline(y+1 , 15 ,"_",16)
             if not (idx == selected_rows):
                 self._window.addstr(y,x ,f"{values[idx]}:")
                 self._window.addstr(y,14 ,f" {self.data[values[idx]]}")

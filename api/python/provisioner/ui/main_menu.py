@@ -32,6 +32,7 @@ class MainMenu(Window):
         super().__init__(window)
         self.set_menus(config.menu)
         self._menu_dict = config.menu
+        self._menu.append("Exit")
 
     def get_menu(self):
         return self._menu
@@ -39,7 +40,6 @@ class MainMenu(Window):
     def set_menus(self, menu):
         self._menu_dict = menu
         tmp_menu =  list(menu.keys())
-        tmp_menu.append("Exit")
         self._menu = tmp_menu
 
     def create_window(self, **kwargs):
@@ -63,6 +63,20 @@ class MainMenu(Window):
 
         self._window.refresh()
 
+    def previos_menu(self):
+        self._parent.pop()
+        if self._parent == []:
+            ext_menu = "Exit"
+        else:
+            ext_menu = "Back"
+        menu = config.menu
+
+        for level in self._parent:
+            menu = menu[level]
+
+        self.set_menus(menu)
+        self._menu.append(ext_menu)
+
     def process_input(self, color_code):
         current_row = 0
         while 1:
@@ -76,17 +90,22 @@ class MainMenu(Window):
                 current_row < len(self.get_menu()) - 1
             ):
                 current_row = current_row + 1
-            elif key == config.Key.QUITE.value:
-                return
             elif key == curses.KEY_ENTER or key in (config.Key.EXIT_1.value,
                                                     config.Key.EXIT_2.value):
                 if current_row == len(self.get_menu()) - 1:
-                    return
+
+                    if self._parent == []:
+                        return
+
+                    self.previos_menu()
+
                 elif current_row >= 0 and current_row < len(self.get_menu()):
                     key = self._menu[current_row]
                     if isinstance(self._menu_dict[key], dict):
                         self._parent.append(key)
                         self.set_menus(self._menu_dict[key])
+                        self._menu.append("Back")
+                        current_row = 0
                     else:
                         self._parent.append(key)
                         module, cls = self._menu_dict[key].split(":") 
@@ -107,8 +126,7 @@ class MainMenu(Window):
                             wd.create_window(
                                  color_code=color_code,
                                  component=self._parent)
-                        self.set_menus(config.menu)
-                        self._parent = []
+                        self._parent.remove(key)
 
             self._window.clear()
             self.create_window(color_code=color_code, menu_code=current_row)

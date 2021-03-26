@@ -26,13 +26,11 @@ class Window:
     _max_h = None
     _max_w = None
     _window = None
-    _stdscr = None
     _parent = []
 
     def __init__(self, window):
         self._max_h, self._max_w = window.getmaxyx()
         self._window = window
-        self._stdscr = window
         self._window.border()
 
     def enable_keypad(self):
@@ -61,8 +59,6 @@ class Window:
 
     def create_menu_head(self):
         menu_header = '>> '.join(self._parent)
-        import os
-        os.system(f"echo '{self._parent}' >> keys.log")
         if menu_header:
             menu_header = menu_header + ":"
         col_code_attr = ColorCode.get_color_pair(config.default_menu_head)

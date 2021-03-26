@@ -46,7 +46,9 @@ menu = {
     'Set Hostname': 'hostname:HostnameWindow',
     'Setup Netowrk': menu_network ,
     'Set Host Primary': 'is_primary:PrimaryWindow',
-    'Setup storage': 'hostname:HostnameWindow'
+    'Setup storage': 'hostname:HostnameWindow',
+    'Setup firewall': 'hostname:HostnameWindow',
+    'Setup Time Server': 'hostname:HostnameWindow'
 }
 
 
