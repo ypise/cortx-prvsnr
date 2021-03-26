@@ -31,6 +31,26 @@ class StaticNetworkWindow(Window):
             'Netmask': '1.255.255.255',
             'Gateway': '198.162.0.1'}
 
+    def submit_button(self, x, y, menu, selected_rows):
+        buttons = {
+           "Submit": x + 15,
+           "Cancel": x + 5
+        }
+        selected_button = None
+        if selected_rows == len(menu):
+            selected_button = "Submit"
+        elif selected_rows == len(menu) + 1:
+            selected_button = "Cancel"
+        for button in buttons.keys():
+            if selected_button == button:
+                cod = ColorCode.get_color_pair(1)
+                self.on_attr(cod)
+                self._window.addstr(y + 1,buttons[button] ,button)
+                self.off_attr(cod)
+            else:
+                self._window.addstr(y + 1,buttons[button] ,button)
+
+
     def create_window(self, **kwargs):
         color_code = kwargs['color_code']
         self._parent = kwargs['component']
@@ -68,15 +88,17 @@ class StaticNetworkWindow(Window):
                 self._window.addstr(y,14 ,f" {self.data[values[idx]]}")
  
         y = self.get_max_height()  // 3 - len(values)//2 + (len(values) + 1)*2
-        if selected_rows >= len(values):
-            cod = ColorCode.get_color_pair(1)
-            self.on_attr(cod)
-            self._window.addstr(y + 1,x + 15 ,"Submit ")
-            self.off_attr(cod)
-        else:
+
+        self.submit_button(x, y, values, selected_rows)
+   #     if selected_rows == len(values):
+   #         cod = ColorCode.get_color_pair(1)
+   #         self.on_attr(cod)
+   #         self._window.addstr(y + 1,x + 15 ,"Submit ")
+   #         self.off_attr(cod)
+   #     else:
             #cod = ColorCode.get_color_pair(1) 
             #self.on_attr(cod)      
-            self._window.addstr(y + 1,x + 15 ,"Submit ")
+   #         self._window.addstr(y + 1,x + 15 ,"Submit ")
             #self.off_attr(cod)
 
         if selected_rows <len(values):
@@ -102,6 +124,10 @@ class StaticNetworkWindow(Window):
                current_row = current_row - 1
            elif key == curses.KEY_DOWN and  current_row < len(values):
                current_row = current_row + 1
+           elif current_row == len(values) and key == curses.KEY_LEFT:
+               current_row = current_row + 1
+           elif current_row == len(values) + 1 and key == curses.KEY_RIGHT:
+               current_row = current_row - 1
            elif key == 113:
                return
            elif key == curses.KEY_ENTER or key in (10, 13):
