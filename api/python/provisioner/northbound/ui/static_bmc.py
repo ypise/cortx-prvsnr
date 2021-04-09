@@ -16,29 +16,26 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 #
-import curses
-import config
-from main_menu import MainMenu
-from color_code import ColorCode
-from header import HeaderWindow
-from window import Window
+from .form_window import FormWindow
 
-def main(stdscr):
-    curses.initscr()
-    curses.curs_set(0)
-    ColorCode.init()
-    for code, color in config.color_codes.items():
-        ColorCode.create_color_pair(code, color[0], color[1])
 
-    wind = Window(stdscr)
-    header_window = curses.newwin( wind._max_h // 5, wind._max_w - 1, 1, 1)
-    HeaderWindow(header_window).create_window(color_code=config.menu_color)
-    main_window = curses.newwin(wind._max_h - wind._max_h // 5 , wind._max_w -1, wind._max_h // 5 , 1 )
+class StaticBMCNetworkWindow(FormWindow):
 
-    winds = MainMenu(main_window)
-    winds.enable_keypad()
-    winds.create_window(color_code=config.menu_color,menu_code=0)
-    winds.process_input(config.menu_color)
-
-if __name__ == '__main__':
-    curses.wrapper(main)
+    data = {
+            'Ip': {
+                      'default': '10.10.10.11',
+                      'validation': 'ipv4',
+                      'pillar_key': 'srvnode-0/bmc/ip'
+                  },
+            'Netmask': {
+                           'default': '1.255.255.251',
+                           'validation': 'ipv4',
+                           'pillar_key': 'srvnode-0/bmc/netmask'
+                       },
+            'Gateway': {
+                           'default': '198.162.0.1',
+                           'validation': 'ipv4',
+                           'pillar_key': 'srvnode-0/bmc/gateway'
+                       }
+           }
+    component_type = 'BMC Network'

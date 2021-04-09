@@ -16,35 +16,20 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 #
-import curses
-import config
-from curses import textpad
-from window import Window
-from color_code import ColorCode
-from text_box import TextBox
-from success import SuccessWindow
+from . import config
+from .window import Window
+from .color_code import ColorCode
 
 
-class HostnameWindow(Window):
+class HeaderWindow(Window):
 
     def create_window(self, **kwargs):
         color_code = kwargs['color_code']
-        comp_name = ' '.join(kwargs['component'])
-
-        self.create_menu_head()
-
         col_code_attr = ColorCode.get_color_pair(color_code)
-        x = self.get_max_width() // 2
-        y = self.get_max_height() // 2 - 1
         self.on_attr(col_code_attr)
-        self._window.addstr(y,3 ,f"Please enter {comp_name} for this machine ")
-        self.enable_keypad()
+        # Add tittle at the middle of header window
+        self._window.addstr(self._max_h // 2,
+                            self._max_w // 2 - len(config.tittle) // 2,
+                            f"{config.tittle}")
+        self._window.refresh()
         self.off_attr(col_code_attr)
-        data = TextBox(self._window, 1, 16, y+3, 3, self.get_max_height()//4).create_textbox(color_code)
-
-        self._window.clear()
-
-        win = SuccessWindow(self._window)
-        win.create_window(color_code=2,data=f"{' '.join(self._parent)} : {data}")
-
-

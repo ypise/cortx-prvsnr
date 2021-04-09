@@ -17,11 +17,10 @@
 #
 #
 import curses
-import config
+from . import config
 import importlib
-from curses import textpad
-from window import Window
-from color_code import ColorCode
+from .window import Window
+from .color_code import ColorCode
 
 
 class MainMenu(Window):
@@ -39,7 +38,7 @@ class MainMenu(Window):
 
     def set_menus(self, menu):
         self._menu_dict = menu
-        tmp_menu =  list(menu.keys())
+        tmp_menu = list(menu.keys())
         self._menu = tmp_menu
 
     def create_window(self, **kwargs):
@@ -50,13 +49,17 @@ class MainMenu(Window):
         self.create_menu_head()
 
         for idx, row in enumerate(self._menu):
-            x = self.get_max_width() // 2 - len(row)//2
-            y = self.get_max_height()  // 2 - len(self._menu)//2 + idx
+            # to display menu at the middle of screen
+            x = self.get_max_width() // 2 - len(row) // 2
+            y = self.get_max_height() // 2 - len(self._menu) // 2 + idx
 
             if idx == selected_rows:
+                # Selected row should be start with >> for
+                # better visual effects
+                row_curser = ">> "
                 self.on_attr(col_code_attr)
-                self._window.addstr(y,x-3 ,">> ")
-                self._window.addstr(y,x ,row)
+                self._window.addstr(y, x - len(row_curser), row_curser)
+                self._window.addstr(y, x, row)
                 self.off_attr(col_code_attr)
             else:
                 self._window.addstr(y, x, row)
@@ -77,21 +80,25 @@ class MainMenu(Window):
         self.set_menus(menu)
         self._menu.append(ext_menu)
 
-    def process_input(self, color_code):
+    def process_input(self, color_code):  # noqa: C901
         current_row = 0
         while 1:
             key = self._window.getch()
             self._window.clear()
-
+            # go up in menu list
             if key == curses.KEY_UP and current_row > 0:
-                current_row = current_row - 1
+                current_row -= 1
+            # go down in menu list
             elif (
                 key == curses.KEY_DOWN and
                 current_row < len(self.get_menu()) - 1
             ):
-                current_row = current_row + 1
+                current_row += 1
+            # Select menu option from list
             elif key == curses.KEY_ENTER or key in (config.Key.EXIT_1.value,
                                                     config.Key.EXIT_2.value):
+
+                # condition for Back button
                 if current_row == len(self.get_menu()) - 1:
 
                     if self._parent == []:
@@ -99,8 +106,11 @@ class MainMenu(Window):
 
                     self.previos_menu()
 
+                # condition for Main menu
                 elif current_row >= 0 and current_row < len(self.get_menu()):
                     key = self._menu[current_row]
+
+                    # Nested menu condition
                     if isinstance(self._menu_dict[key], dict):
                         self._parent.append(key)
                         self.set_menus(self._menu_dict[key])
@@ -108,17 +118,24 @@ class MainMenu(Window):
                         current_row = 0
                     else:
                         self._parent.append(key)
-                        module, cls = self._menu_dict[key].split(":") 
+                        module, cls = self._menu_dict[key].split(":")
+
                         try:
                             wid_mod = importlib.import_module(
-                                f'{module}'
+                                f'.{module}', 'provisioner.northbound.ui'
                             )
-                        except Exception:
+                        except ImportError:
                             raise
+
+                        # Load/Open window for given Menu
                         Pm_w = getattr(wid_mod, cls)
                         wd = Pm_w(self._window)
                         wd._parent = self._parent
-                        wd.create_window(color_code=color_code, component=self._parent)
+                        wd.create_window(
+                            color_code=color_code,
+                            component=self._parent
+                        )
+
                         if hasattr(wd, 'process_input'):
                             wd.process_input(
                                  color_code=color_code)

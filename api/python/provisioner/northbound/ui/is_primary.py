@@ -16,22 +16,9 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 #
-import curses
-import config
+from .question_window import QuestionWindow
 
 
-class ColorCode:
+class PrimaryWindow(QuestionWindow):
 
-    @staticmethod
-    def init():
-        curses.start_color()
-
-    @staticmethod
-    def create_color_pair(code, color1, color2):
-        curses.init_pair(code, color1, color2)
-
-    @staticmethod
-    def get_color_pair(color_code):
-        if not config.color_codes.get(color_code, None):
-            raise Exception("No color code defined")
-        return curses.color_pair(color_code)
+    _question = "Is this the first node configured for this new cluster?"

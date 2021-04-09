@@ -17,15 +17,13 @@
 #
 #
 import curses
-import config
-from curses import textpad
-from window import Window
-from color_code import ColorCode
-from hostname import HostnameWindow
-from static import StaticNetworkWindow
+from .window import Window
+from .color_code import ColorCode
 
-class PrimaryWindow(Window):
+
+class QuestionWindow(Window):
     _menu = ["Yes", "No"]
+    _question = "Is this ?"
 
     def get_menu(self):
         return self._menu
@@ -41,45 +39,49 @@ class PrimaryWindow(Window):
         self.create_menu_head()
         self._window.border()
         col_code_attr = ColorCode.get_color_pair(color_code)
-        x = self.get_max_width() // 2
+        x = 3
         y = self.get_max_height() // 2 - 1
-        self._window.addstr(y,3 ,f"Is this primary node ?")
+        self._window.addstr(y, x, f"{self._question}")
         if selected == "Yes":
             self.on_attr(col_code_attr)
-            self._window.addstr(y+2,3 ,f">> Yes")
+            self._window.addstr(y+2, x, f">> Yes")
             self.off_attr(col_code_attr)
-            self._window.addstr(y+4,6 ,f"No")
+            self._window.addstr(y+4, x+3, f"No")
         else:
             self.on_attr(col_code_attr)
-            self._window.addstr(y+4,3 ,f">> No")
+            self._window.addstr(y+4, x, f">> No")
             self.off_attr(col_code_attr)
-            self._window.addstr(y+2,6 ,f"Yes")
+            self._window.addstr(y+2, x+3, f"Yes")
 
         self._window.refresh()
 
     def process_input(self, color_code):
         current_row = 0
         while 1:
-           key = self._window.getch()
-           self._window.clear()
-           if key == curses.KEY_UP and current_row > 0:
-               current_row = current_row - 1
-           elif key == curses.KEY_DOWN and  current_row < len(self.get_menu()) - 1:
-               current_row = current_row + 1
-           elif key == 113:
-               return
-           elif key == curses.KEY_ENTER or key in (10, 13):
-               import os
-               os.system(f"echo {self._menu[current_row]} >> key.log")
-               if current_row == 0:
-                    
-                    #wd = StaticNetworkWindow(self._window)
-                    #wd.create_window(component=component, color_code=config.default_window_color)
+            key = self._window.getch()
+            self._window.clear()
+            if key == curses.KEY_UP and current_row > 0:
+                current_row = current_row - 1
+            elif (key == curses.KEY_DOWN and
+                  current_row < len(self.get_menu()) - 1):
+                current_row = current_row + 1
+            elif key == curses.KEY_ENTER or key in (10, 13):
+                if current_row == 0:
+                    self.yes_action()
+                    current_row = 0
                     break
-               else:
+                else:
+                    self.no_action()
+                    current_row = 0
                     break
 
-           self._window.clear()
-           self.create_window(color_code=color_code, selected=self._menu[current_row])
-           self._window.refresh()
+            self._window.clear()
+            self.create_window(color_code=color_code,
+                               selected=self._menu[current_row])
+            self._window.refresh()
 
+    def no_action(self):
+        pass
+
+    def yes_action(self):
+        pass

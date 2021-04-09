@@ -1,7 +1,4 @@
-#!/usr/bin/env python
-#
 # Copyright (c) 2020 Seagate Technology LLC and/or its Affiliates
-#
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
 # by the Free Software Foundation, either version 3 of the License, or
@@ -15,23 +12,17 @@
 # For any questions about this software or licensing,
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
-#
-import curses
-from curses import textpad
-from color_code import ColorCode
-from window import Window
+from provisioner.vendor import attr
 
-class SuccessWindow(Window):
+@attr.s(auto_attribs=True)
+class HostnameModel:
+    Hostname: str = attr.ib(init=True,
+                                 default='srvnode-0.seagate.com')
 
-    def create_window(self, **kwargs):
-        color_code = kwargs['color_code']
-        data = kwargs['data']
-        col_code_attr = ColorCode().get_color_pair(color_code)
-        x = self.get_max_width() // 2
-        y = self.get_max_height() // 2 - 1
-        self.on_attr(col_code_attr)
-        self._window.addstr(y,3 ,f"{data} is set Successfully")
-        self.off_attr(col_code_attr)
-        self._window.refresh()
-        curses.napms(1000)
 
+@attr.s(auto_attribs=True)
+class TimeServerModel:
+    Time_Server: str = attr.ib(init=True,
+                                 default='time.seagate.com')
+    Time_Zone: str = attr.ib(init=True,
+                                 default='UTC')

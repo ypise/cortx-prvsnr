@@ -16,10 +16,8 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 #
-import curses
-import config
-from curses import textpad
-from color_code import ColorCode
+from . import config
+from .color_code import ColorCode
 
 
 class Window:
@@ -48,24 +46,14 @@ class Window:
     def off_attr(self, attr):
         self._window.attroff(attr)
 
-    def create_default_windows(self, color_code):
-        col_code_attr = ColorCode.get_color_pair(color_code)
-        self.on_attr(col_code_attr)
-        textpad.rectangle(self._window, 1,1, self._max_h - 2, self._max_w - 2)
-        self._window.addstr(5,self._max_w//2 - len(config.tittle)//2 ,f"{config.tittle}")
-        self._window.hline(6,2,"_",self._max_w - 4)
-        self._window.addstr(self._max_h-1, 0, " Key Commands : q - to quit " ,curses.color_pair(color_code) )
-        self.off_attr(col_code_attr)
-
     def create_menu_head(self):
         menu_header = '>> '.join(self._parent)
         if menu_header:
             menu_header = menu_header + ":"
         col_code_attr = ColorCode.get_color_pair(config.default_menu_head)
         self.on_attr(col_code_attr)
-        self._window.addstr(2,4 ,menu_header)
+        self._window.addstr(2, 4, menu_header)
         self.off_attr(col_code_attr)
-
 
     def create_window(self, **kwargs):
         pass

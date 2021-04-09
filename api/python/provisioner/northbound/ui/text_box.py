@@ -17,51 +17,55 @@
 #
 #
 import curses
-import config
-from curses import textpad
-from window import Window
-from color_code import ColorCode
-from success import SuccessWindow
 from curses.textpad import Textbox
+from .validation import Validation
+from .color_code import ColorCode
+
 
 class TextBox():
     _text = None
     _window = None
+    _obj = None
 
-    def __init__(self,window, h, w, y, x, header_height):
+    def __init__(self, window, h, w, y, x, header_height):
         self.h = h
         self.w = w
         self.x = x
         self.y = y
         self.header_height = header_height
-        self._window = window
+        self._obj = window
+        self._window = window._window
 
-    def create_textbox(self, color_code, default_value=None):
+    def create_textbox(self, color_code, default_value=None, validate=None):
         is_valid = False
-        data = ""
+        data = None
         while(not is_valid):
-            self._window.hline(self.y + 1 , self.x ,"_",16)
+            self._window.hline(self.y + 1, self.x, "_", 16)
             self._window.refresh()
 
-            new_win = curses.newwin(self.h, self.w, self.y + self.header_height , self.x)
+            new_win = curses.newwin(self.h, self.w,
+                                    self.y + self.header_height, self.x)
+
+            import os
+            os.system(f"echo {str(self.header_height)} >> lenght.log")
             text = Textbox(new_win, insert_mode=False)
+
             if default_value:
                 for i in default_value:
                     text.do_command(ord(i))
-            data = text.edit()
 
-            if "seagate.com" in data.strip() or True:
+            data = text.edit().strip()
+            if not validate:
                 is_valid = True
-                #checks = Check()
-                #content = checks.loads()
-                #content[config.menu[component]] = True
-                #checks.dumps(content)
+            elif getattr(Validation, validate)(data):
+                is_valid = True
             else:
                 col_code_attr = ColorCode().get_color_pair(3)
-                self.on_attr(col_code_attr)
-                self._window.addstr(self.y + 3,3 ,f"Error: Invalid {data.strip()} Please re-enter hostname")
-                self.off_attr(col_code_attr)
+                self._obj.on_attr(col_code_attr)
+                self._window.addstr(self.header_height - 1,
+                                    3,
+                                    f"Error: Invalid {validate}"
+                                    f" {data} Please re-enter")
+                self._obj.off_attr(col_code_attr)
                 self._window.refresh()
         return data
-
-

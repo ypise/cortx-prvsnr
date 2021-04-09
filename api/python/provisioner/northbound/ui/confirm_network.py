@@ -16,24 +16,9 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 #
-import curses
-import config
-from curses import textpad
-from window import Window
-from color_code import ColorCode
-
-class HeaderWindow(Window):
-
-    def create_window(self, **kwargs):
-        color_code = kwargs['color_code']
-        col_code_attr = ColorCode().get_color_pair(color_code)
-        self.on_attr(col_code_attr)
-        #header_window = curses.newwin( self._max_h // 5, self._max_w - 1, 1, 1)
-        #self._window.border()
-        self._window.addstr(self._max_h // 2 , self._max_w // 2 - len(config.tittle)//2 ,f"{config.tittle}")
-        self._window.refresh()
-        #self._window.hline(6,2,"_",self._max_w - 4)
-        #self._window.addstr(self._max_h-1, 0, " Key Commands : q - to quit " ,curses.color_pair(color_code) )
-        self.off_attr(col_code_attr)
+from .question_window import QuestionWindow
 
 
+class NetworkWindow(QuestionWindow):
+
+    _question = "Are you sure you want to apply network changes?"
