@@ -17,10 +17,8 @@
 
 
 Start zoopkeper:
-  cmd.run:
-    - name: ./bin/zookeeper-server-start.sh -daemon config/zookeeper.properties
-    - cwd: /opt/kafka
-    - unless: test 1 -le $(ps ax | grep java | grep -i QuorumPeerMain | grep -v grep | awk '{print $1}' | wc -l)
+  service.running:
+    - name: kafka-zookeeper
 
 #TODO: find better solution to add delay
 Wait for zookeeper to start:
@@ -31,9 +29,7 @@ Wait for zookeeper to start:
       - Start zoopkeper
 
 Start kafka:
-  cmd.run:
-    - name: ./bin/kafka-server-start.sh -daemon config/server.properties
-    - cwd: /opt/kafka
-    - unless: test 1 -le $(ps ax | grep ' kafka\.Kafka ' | grep java | grep -v grep | awk '{print $1}' | wc -l)
+  service.running:
+    - name: kafka
     - require:
       - Wait for zookeeper to start
