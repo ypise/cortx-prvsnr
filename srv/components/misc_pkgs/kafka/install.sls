@@ -24,18 +24,6 @@ Install Java:
     - pkgs:
       - java-1.8.0-openjdk-headless
 
-Extract Kafka:
-  archive.extracted:
-    - name: /opt
-    - source: {{ defaults.commons.repo.url }}/commons/kafka/kafka_{{ kafka_version }}.tgz
-    - keep_source: True
-    - clean: True
-    - trim_output: True
-    - skip_verify: True
-
-Move contents to /opt/kafka:
-  file.rename:
-    - name: /opt/kafka
-    - source: /opt/kafka_{{ kafka_version }}
-    - makedirs: True
-    - force: True
+Install Kafka:
+  pkg.installed:
+    - name: kafka

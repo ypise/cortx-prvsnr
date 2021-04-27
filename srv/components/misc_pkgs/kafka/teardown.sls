@@ -29,7 +29,7 @@ Remove kafka directory:
 
 Remove zookeeper data directory:
   file.absent:
-    - name: /var/lib/zookeeper
+    - name: /opt/zookeeper
 
 Remove kafka flag:
   file.absent:
