@@ -32,7 +32,7 @@
     ) %}
 {% endfor %}
 
-Update zoopkeeper cofig:
+Update zookeeper cofig:
   file.managed:
     - name: /opt/kafka/config/zookeeper.properties
     - source: salt://components/misc_pkgs/kafka/files/zookeeper.properties
