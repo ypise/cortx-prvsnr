@@ -19,6 +19,7 @@
 Start zoopkeper:
   service.running:
     - name: kafka-zookeeper
+    - enable: True
 
 #TODO: find better solution to add delay
 Wait for zookeeper to start:
@@ -31,5 +32,6 @@ Wait for zookeeper to start:
 Start kafka:
   service.running:
     - name: kafka
+    - enable: True
     - require:
       - Wait for zookeeper to start
