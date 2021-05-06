@@ -15,7 +15,7 @@
 # please email opensource@seagate.com or cortx-questions@seagate.com.
 #
 
-Ensure kafka has started:
+Ensure kafka is online:
   cmd.run:
     - name: telnet {{ grains['id'] }}.data.private {{ pillar['cortx']['software']['zookeeper']['client_port'] }}
     - retry:
