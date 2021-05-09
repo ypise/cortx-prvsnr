@@ -324,7 +324,7 @@ class Deploy(CommandParserFillerMixin):
 
     def _update_salt(self, targets=config.ALL_MINIONS):
         # TODO IMPROVE why do we need that
-        # TODO IMPROVE do wee need to wait 2 seconds after each operation
+        # TODO IMPROVE do we need to wait 2 seconds after each operation
         #      as it was in legacy bash script
         logger.info("Updating Salt data")
 
