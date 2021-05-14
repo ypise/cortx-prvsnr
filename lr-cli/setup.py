@@ -17,10 +17,14 @@
 
 from setuptools import setup
 
-setup(name='cortx-setup',
+setup(name='cortx_setup',
       version='1.0',
       description='Python cortx_setup API',
       license='Seagate',
-      url='cortx_setup',
-      packages=['cortx-setup'],
+      url='https://github.com/Seagate/cortx-prvsnr',
+      package_dir={'cortx_setup': 'cortx_setup'},
+      include_package_data=True,
+      install_requires=[
+          'cortx-prvsnr >= 2.0.42'
+      ],
      )
